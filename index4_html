@@ -1,0 +1,42 @@
+#include <SoftwareSerial.h>
+
+SoftwareSerial voice(2, 3); // RX, TX
+
+char command;
+
+void setup() {
+  Serial.begin(9600);
+  voice.begin(9600);
+
+  pinMode(7, OUTPUT); // Device 1
+  pinMode(8, OUTPUT); // Device 2
+}
+
+void loop() {
+  if (voice.available()) {
+    command = voice.read();
+    Serial.print("Command: ");
+    Serial.println(command);
+
+    if (command == 0x01) {
+      digitalWrite(7, HIGH); // Turn ON device 1
+    }
+    else if (command == 0x02) {
+      digitalWrite(7, LOW); // Turn OFF device 1
+    }
+    else if (command == 0x03) {
+      digitalWrite(8, HIGH); // Turn ON device 2
+    }
+    else if (command == 0x04) {
+      digitalWrite(8, LOW); // Turn OFF device 2
+    }
+  }
+}
+
+EXPECTED OUTPUT :                                                                                                                                                                                                           Speak "Light On" → LED1 turns ON
+
+Speak "Light Off" → LED1 turns OFF
+
+Speak "Fan On" → LED2 turns ON
+
+Speak "Fan Off" → LED2 turns OFF
